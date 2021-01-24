@@ -41,5 +41,6 @@ resource "aws_instance" "example_ec2" {
 
 Application Load Balancer를 붙이기 위해서 다른 subnet에 ec2를 하나 더 생성해주자.
 
-> 아 subnet id를 가져온다든가, 기존의 리소스를 가져올 때 뭔가 기똥찬 방법으로 가져오고 싶은데, 뭐가 있을까
+<img width="846" alt="스크린샷 2021-01-25 오전 1 36 50" src="https://user-images.githubusercontent.com/46708207/105636891-cd33a880-5ead-11eb-8fc5-637585518ba5.png">
 
+> 아 subnet id를 가져온다든가, 기존의 리소스를 가져올 때 뭔가 기똥찬 방법으로 가져오고 싶은데, 뭐가 있을까
