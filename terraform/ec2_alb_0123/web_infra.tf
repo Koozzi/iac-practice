@@ -21,11 +21,28 @@ resource "aws_security_group" "ssh_http" {
   }
 }
 
-resource "aws_instance" "example_ec2" {
-  ami           = "ami-0e67aff698cb24c1d"
-  instance_type = "t2.micro"
-  key_name      = "terraform"
+resource "aws_instance" "example_ec2-a" {
+  ami                    = "ami-0e67aff698cb24c1d"
+  instance_type          = "t2.micro"
+  key_name               = "alb-study"
+  subnet_id              = "subnet-aad402c1"
+  vpc_security_group_ids = [
+    aws_security_group.ssh_http.id,
+  ]
   tags = {
-	  Name = "example-ec2"
+	  Name = "example-ec2-a"
+  }
+}
+
+resource "aws_instance" "example_ec2-c" {
+  ami                    = "ami-0e67aff698cb24c1d"
+  instance_type          = "t2.micro"
+  key_name               = "alb-study"
+  subnet_id              = "subnet-00447e4c"
+  vpc_security_group_ids = [
+    aws_security_group.ssh_http.id,
+  ]
+  tags = {
+	  Name = "example-ec2-c"
   }
 }
