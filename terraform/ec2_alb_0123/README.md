@@ -44,3 +44,27 @@ Application Load Balancer를 붙이기 위해서 다른 subnet에 ec2를 하나 
 <img width="846" alt="스크린샷 2021-01-25 오전 1 36 50" src="https://user-images.githubusercontent.com/46708207/105636891-cd33a880-5ead-11eb-8fc5-637585518ba5.png">
 
 > 아 subnet id를 가져온다든가, 기존의 리소스를 가져올 때 뭔가 기똥찬 방법으로 가져오고 싶은데, 뭐가 있을까
+
+### 2021.01.26
+오늘은 Terraform으로 Application Load Balancer를 생성하고 어제 만든 두 개의 EC2(가용영역 a, 가용영역 b)를 붙여볼 것이다.
+
+처음에는 완벽하지 않은, 다시 말해 필수 설정만 완료한 ALB를 생성해본다. ALB에 관한 tf파일을 새로 만들어줬다.
+~~~
+resource "aws_alb" "koozzi-alb" {
+  name               = "koozzi-alb"
+  internal           = false
+  subnets            = ["subnet-aad402c1", "subnet-00447e4c"]
+  security_groups    = ["sg-03b15fd39b667c996"]
+  load_balancer_type = "application"
+  
+  tags = {
+    Name = "koozzi-alb"
+  }
+}
+~~~
+여기서 신경써야 할 부분은 subnets과 security_groups이다. 대괄호로 안에 해당하는 id를 넣어야 한다. 만약에 아래와 같이 설정을 한다면 오류가 뜰 것이다.
+
+~~~
+security_groups    = ["sg-03b15fd39b667c996"]
+-> 이렇게 하면 안 됩니다용^^
+~~~
