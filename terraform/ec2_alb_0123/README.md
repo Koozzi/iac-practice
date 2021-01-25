@@ -64,7 +64,68 @@ resource "aws_alb" "koozzi-alb" {
 ~~~
 여기서 신경써야 할 부분은 subnets과 security_groups이다. 대괄호로 안에 해당하는 id를 넣어야 한다. 만약에 아래와 같이 설정을 한다면 오류가 뜰 것이다.
 
+그리고 internal부분에 true로 설정을 한다면 내부 프라이빗 네트워크를 사용하겠다는 뜻이다. false로 지정해서 외부와 통신할 수 있게 하자.
+
 ~~~
 security_groups    = ["sg-03b15fd39b667c996"]
 -> 이렇게 하면 안 됩니다용^^
 ~~~
+
+이제는 ALB에 할당되는 대상 그룹을 지정해보자
+~~~
+resource "aws_alb_target_group" "koozzi_alb_target" {
+  name     = "koozzi-alb-target"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = "vpc-3c1bbe57"
+}
+
+resource "aws_lb_target_group_attachment" "target_attachment_1" {
+  target_group_arn = "${aws_alb_target_group.koozzi_alb_target.arn}"
+  target_id = "i-0c28891d4570b9ce4"
+  port = 80
+}
+
+resource "aws_lb_target_group_attachment" "target_attachment_2" {
+  target_group_arn = "${aws_alb_target_group.koozzi_alb_target.arn}"
+  target_id = "i-05a527a1c9f03e9f4"
+  port = 80
+}
+~~~
+
+먼저 `koozzi_alb_target`라는 대상 그룹을 생성한다. 여기서 healthy check은 따로 지정을 하지 않으면 아래와 같이 default로 설정이 된다. 
+
+<img width="830" alt="스크린샷 2021-01-26 오전 2 11 27" src="https://user-images.githubusercontent.com/46708207/105739767-cd9a7500-5f7b-11eb-8f37-d7c0d3484665.png">
+
+다음으로는 새로 생성한 대상 그룹에 인스턴스를 집어 넣어야 하는데 사실 아래와 같이 resource를 한 번만 사용해서 여러 인스턴스를 붙일 수 있지만 우선 지금은 resource를 두 번 사용해서 전에 생성한 두 개의 인스턴스를 대상 그룹에 넣어 줬다.
+
+<img width="655" alt="스크린샷 2021-01-26 오전 2 13 25" src="https://user-images.githubusercontent.com/46708207/105740005-14886a80-5f7c-11eb-887e-0f615b307347.png">
+
+다음으로 ALB listener를 구성해서 들어오는 트래픽을 target group으로 보낼 수 있도록 해보자. 
+
+~~~
+resource "aws_alb_listener" "koozzi-listener" {
+  load_balancer_arn = aws_alb.koozzi_alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.koozzi_alb_target.arn
+  }
+}
+~~~
+
+HTTP프로토콜 80번 포트를 사용해서 해당 로드밸런서에 접근을 하면 `koozzi_alb_target`이라는 대상 그룹으로 트래픽을 전송하게 설정한다.
+
+마지막으로 테스트
+
+테스트 진행방식
+
+1. 인스턴스 두 개를 모두 띄운다
+2. 인스턴스 안에서 apache2를 설치하고 -tail을 사용해서 실시간 접근 내역을 확인한다.
+3. ALB 주소로 1초에 한 번씩 접속한다.
+4. 두 개의 인스턴에 번갈아가면서 접속 로그가 찍히면 성공
+5. 성공했으면 빨리 삭제하자 요금나간다 ^^ `terraform destroy`
+
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/46708207/105745549-be1e2a80-5f81-11eb-97f8-0662a15f5fa3.gif)
