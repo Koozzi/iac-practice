@@ -8,4 +8,4 @@
 
 - [Application Load Balancer 구성하기](https://github.com/Koozzi/iac-practice/tree/main/terraform/ec2_alb_0123)
 
-- VPC / ALB / Security Group / EC2 / RDS
+- [VPC / ALB / Security Group / EC2 / RDS](https://github.com/Koozzi/iac-practice/tree/main/terraform/vpc_alb)
