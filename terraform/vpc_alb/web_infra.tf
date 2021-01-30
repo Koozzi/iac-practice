@@ -243,7 +243,7 @@ resource "aws_security_group" "private_security_group" {
 
 resource "aws_instance" "public_ec2_a" {
   ami                    = "ami-0e67aff698cb24c1d"
-  key_name               = "alb-study"
+  key_name               = "aws-password"
   subnet_id              = aws_subnet.public_subnet_a.id
   instance_type          = "t2.micro"
 
@@ -258,7 +258,7 @@ resource "aws_instance" "public_ec2_a" {
 
 resource "aws_instance" "public_ec2_c" {
   ami                    = "ami-0e67aff698cb24c1d"
-  key_name               = "alb-study"
+  key_name               = "aws-password"
   subnet_id              = aws_subnet.public_subnet_c.id
   instance_type          = "t2.micro"
 
@@ -273,7 +273,7 @@ resource "aws_instance" "public_ec2_c" {
 
 resource "aws_instance" "private_ec2_a" {
   ami                    = "ami-0e67aff698cb24c1d"
-  key_name               = "alb-study"
+  key_name               = "aws-password"
   subnet_id              = aws_subnet.private_subnet_a.id
   instance_type          = "t2.micro"
 
@@ -288,7 +288,7 @@ resource "aws_instance" "private_ec2_a" {
 
 resource "aws_instance" "private_ec2_c" {
   ami                    = "ami-0e67aff698cb24c1d"
-  key_name               = "alb-study"
+  key_name               = "aws-password"
   subnet_id              = aws_subnet.private_subnet_c.id
   instance_type          = "t2.micro"
 
