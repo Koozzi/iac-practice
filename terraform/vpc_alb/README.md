@@ -55,4 +55,4 @@ Public subnet을 구성할 때, `map_public_ip_on_launch = true` 설정을 해�
 `stress --cpu 1 --timeout 600`
 
 테스트 결과
-ALB에 Auto Scaling를 붙였을 때, 각 인스턴스에 stress를 주면 당연히 인스턴스의 수는 늘어났다. 그리고 ALB에 트래픽을 1초에 한 번씩 보내면 각 인슽턴스로 트래픽이 분산됐다. 그리고 ALB를 구성할 때는 Target Group만 만들고 따로 인스턴스는 따로 넣어주지는 않는다. Auto Scaling을 구성할 때 ALB를 구성하면 알아서 ALB에 딸린 Target Group에 이미지 기반으로 인스턴스가 생성된다.
+> ALB에 Auto Scaling를 붙였을 때, 각 인스턴스에 stress를 주면 당연히 인스턴스의 수는 늘어났다. 그리고 ALB에 트래픽을 1초에 한 번씩 보내면 각 인슽턴스로 트래픽이 분산됐다. 그리고 ALB를 구성할 때는 Target Group만 만들고 따로 인스턴스는 따로 넣어주지는 않는다. Auto Scaling을 구성할 때 ALB를 구성하면 알아서 ALB에 딸린 Target Group에 이미지 기반으로 인스턴스가 생성된다.
