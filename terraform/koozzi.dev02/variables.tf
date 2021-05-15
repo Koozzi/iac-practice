@@ -1,5 +1,5 @@
-variable "AMI_UBUNTU_1804" {
-  default = "ami-0078a04747667d409"
+variable "AMI_AWS_LINUX" {
+  default = "ami-0f2c95e9fe3f8f80e"
 }
 
 variable "DEFAULT_KEY" {
